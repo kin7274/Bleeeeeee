@@ -169,9 +169,7 @@ public class BluetoothLeService extends Service {
                 Intent intent33 = new Intent("namsik");
                 intent33.putExtra("message", action1);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent33);
-
-                //                ((MainActivity)MainActivity.mContext).GODGODGOD();
-            }
+                }
         }
         sendBroadcast(intent);
     }
