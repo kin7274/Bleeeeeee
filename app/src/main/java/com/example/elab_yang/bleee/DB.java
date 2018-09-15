@@ -20,9 +20,8 @@ public class DB extends AppCompatActivity {
     private Menu mMenu;
 
     MyDB my;
-
-    public EditText editText1;
-    public TextView user_name;
+    public EditText editText1, editText2;
+    public TextView user_name, setting_time;
     public Button button1, button2, button3;
     SQLiteDatabase sql;
 
@@ -30,6 +29,7 @@ public class DB extends AppCompatActivity {
     private AlertDialog mUserListDialog;
 
     String user_name2;
+    String setting_time2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +43,10 @@ public class DB extends AppCompatActivity {
         button3 = (Button) findViewById(R.id.button3);
 
         editText1 = (EditText) findViewById(R.id.editText1);
+        editText2 = (EditText) findViewById(R.id.editText2);
 
         user_name = (TextView) findViewById(R.id.textView5);
+        setting_time = (TextView) findViewById(R.id.textView6);
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,12 +63,15 @@ public class DB extends AppCompatActivity {
                 Cursor cursor;
                 cursor = sql.rawQuery("SELECT * FROM MEMBER;", null);
                 user_name2 = "이름" + "\r\n";
+                setting_time2 = "시간" + "\r\n";
 
                 while (cursor.moveToNext()) {
                     user_name2 += cursor.getString(0) + "\r\n";
+                    setting_time2 += cursor.getString(1) + "\r\n";
                 }
 
                 user_name.setText(user_name2);
+                setting_time.setText(setting_time2);
                 cursor.close();
                 sql.close();
             }
@@ -76,7 +81,8 @@ public class DB extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sql = my.getWritableDatabase();
-                sql.execSQL("INSERT INTO member VALUES('" + editText1.getText().toString() + "');"
+                sql.execSQL("INSERT INTO member VALUES('" + editText1.getText().toString()
+                        + "','" + editText2.getText().toString() + "');"
                 );
                 sql.close();
                 Toast.makeText(getApplicationContext(), "정보가 저장되었습니다.", Toast.LENGTH_SHORT).show();
@@ -97,7 +103,6 @@ public class DB extends AppCompatActivity {
             mUserListDialog.show();
             return true;
         } else {
-
             return true;
         }
     }
@@ -111,6 +116,7 @@ public class DB extends AppCompatActivity {
 
         while (cursor.moveToNext()) {
             user_name2 += cursor.getString(0) + "\r\n";
+            setting_time2 += cursor.getString(1) + "\r\n";
             mUserNameArrayList.add(cursor.getString(0) + "\n" + cursor.getString(1));
         }
 
@@ -121,7 +127,7 @@ public class DB extends AppCompatActivity {
         builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //
+
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -133,4 +139,5 @@ public class DB extends AppCompatActivity {
         mUserListDialog = builder.create();
         mUserListDialog.setCanceledOnTouchOutside(false);
     }
+
 }

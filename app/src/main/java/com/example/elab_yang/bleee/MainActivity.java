@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
             switch (v.getId()) {
                 // 블루투스
                 case R.id.btn1:
-                    Log.d(TAG, "버튼1 클릭");
                     Intent intent1 = new Intent(MainActivity.this, DeviceScanActivity.class);
                     startActivity(intent1);
                     break;
