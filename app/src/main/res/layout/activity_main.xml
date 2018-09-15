@@ -42,7 +42,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="183dp"
-        android:text="띠용" />
+        android:text="페어링가즈아ㅏ" />
 
     <TextView
         android:id="@+id/textview3"
@@ -57,13 +57,5 @@
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textview3"
-        android:text="페어링 가즈아ㅏ" />
-
-    <Button
-        android:id="@+id/btn4"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/btn3"
         android:text="디비디비딥" />
 </RelativeLayout>

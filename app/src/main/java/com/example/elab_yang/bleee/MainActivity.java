@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getSimpleName();
     public static Context mContext;
 
-    Button btn1, btn2, btn3, btn4;
+    Button btn1, btn2, btn3;
     TextView textview1, textview2, textview3;
 
     @Override
@@ -40,12 +40,10 @@ public class MainActivity extends AppCompatActivity {
         btn1 = (Button) findViewById(R.id.btn1);
         btn2 = (Button) findViewById(R.id.btn2);
         btn3 = (Button) findViewById(R.id.btn3);
-        btn4 = (Button) findViewById(R.id.btn4);
 
         btn1.setOnClickListener(myListener);
         btn2.setOnClickListener(myListener);
         btn3.setOnClickListener(myListener);
-        btn4.setOnClickListener(myListener);
 
         textview1 = (TextView) findViewById(R.id.textview1);
         textview2 = (TextView) findViewById(R.id.textview2);
@@ -65,19 +63,15 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent1);
                     break;
                 case R.id.btn2:
-                    Log.d(TAG, "버튼2 클릭");
-                    Toast.makeText(getApplicationContext(), "띠요용ㅇㅇㅇㅇㅇㅇㅇㅇ", Toast.LENGTH_LONG).show();
-                    break;
-                case R.id.btn3:
                     final Intent intent2 = new Intent(MainActivity.this, DeviceControlActivity.class);
                     intent2.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, textview1.getText());
                     intent2.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, textview2.getText());
                     startActivity(intent2);
                     break;
-                    case R.id.btn4:
-                        Intent intent3 = new Intent(MainActivity.this, DBinsertActivity.class);
-                        startActivity(intent3);
-                        break;
+                case R.id.btn3:
+                    Intent intent3 = new Intent(MainActivity.this, DB.class);
+                    startActivity(intent3);
+                    break;
             }
         }
     };

@@ -123,7 +123,6 @@ public class DeviceControlActivity extends Activity {
 //                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
                 Log.d(TAG, "띠용...");
                 displayData(abc);
-//                BluetoothLog.setAbc(abc);
                 Log.d(TAG, "2페이지 종료");
                 finish();
             }
