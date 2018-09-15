@@ -22,6 +22,7 @@
         <activity android:name=".DeviceScanActivity"
             android:theme="@android:style/Theme.Holo.Light"/>
         <service android:name=".BluetoothLeService" android:enabled="true"/>
+        <activity android:name=".DBinsertActivity"/>
     </application>
 
 </manifest>

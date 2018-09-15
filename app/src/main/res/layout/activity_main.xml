@@ -65,5 +65,5 @@
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/btn3"
-        android:text="블루투스로그 ABC 데이터 확인" />
+        android:text="디비디비딥" />
 </RelativeLayout>
