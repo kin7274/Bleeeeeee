@@ -33,13 +33,12 @@ public class DB extends AppCompatActivity {
     SQLiteDatabase sql;
 
 
-    private BluetoothLeService mBluetoothLeService;
+    BluetoothLeService mBluetoothLeService = new BluetoothLeService();
     //
     //
     //
 
     public ArrayList<String> mUserNameArrayList = new ArrayList<String>();
-
     String user_name2;
     String setting_time2;
 
@@ -47,17 +46,18 @@ public class DB extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
-//            editText1.setText(message);
-            setDB();
+            // DB에 넣기전에 거르자!
+//            delete();
+            // DB에 셋!
+            setDB(message);
         }
     };
 
-    public void setDB() {
-//        sql = my.getWritableDatabase();
-//        sql.execSQL("INSERT INTO member VALUES('" + editText1.getText().toString()
-//                + "','" + editText2.getText().toString() + "');"
-//        );
-//        sql.close();
+    public void setDB(String str) {
+        sql = my.getWritableDatabase();
+        sql.execSQL("INSERT INTO member VALUES('" + str + "','" + editText2.getText().toString() + "');"
+        );
+        sql.close();
         Toast.makeText(getApplicationContext(), "정보가 저장되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
@@ -112,25 +112,19 @@ public class DB extends AppCompatActivity {
             }
         });
 
-        // DB에 저장!!!
-        // 동기화지
-        // 블루투스값을 여기에 저장한다!
+        // sd카드의 데이터를 가져온다!
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "띠용");
-//                Toast.makeText(getApplicationContext(), "띠요요옹", Toast.LENGTH_LONG).show();
-
-                byte[] data = {0x01};
-                BluetoothGattCharacteristic characteristic;
-                mBluetoothLeService.writeCharacteristic(characteristic, data);
+                mBluetoothLeService.writeCharacteristic("a");
             }
         });
     }
 
     @Override
     protected void onPause() {
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         super.onPause();
     }
 }

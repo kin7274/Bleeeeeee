@@ -103,10 +103,16 @@ public class BluetoothLeService extends Service {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
                 Log.d(TAG, "온캐릭터리스틱 리!드!");
+            }
+        }
 
-//                Intent intent = new Intent();
-//                String action1 = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
-//                BluetoothLog.setAbc(action1);
+
+        @Override
+        public void onCharacteristicWrite(BluetoothGatt gatt,
+                                          BluetoothGattCharacteristic characteristic,
+                                          int status){
+            if(status == BluetoothGatt.GATT_SUCCESS){
+                broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
             }
         }
 
@@ -128,7 +134,6 @@ public class BluetoothLeService extends Service {
     private void broadcastUpdate(final String action,
                                  final BluetoothGattCharacteristic characteristic) {
         final Intent intent = new Intent(action);
-
         // This is special handling for the Heart Rate Measurement profile.
         // carried out as per profile specifications:
         // http://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
@@ -156,11 +161,7 @@ public class BluetoothLeService extends Service {
                 Log.d(TAG, "데이터날리는데?");
                 String action1 = intent.getStringExtra(EXTRA_DATA);
                 BluetoothLog.setAbc(action1);
-//                sendMessage();
-
-                Intent intent33 = new Intent("namsik");
-                intent33.putExtra("message", action1);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(intent33);
+                sendMessage();
             }
         }
         sendBroadcast(intent);
@@ -305,19 +306,39 @@ public class BluetoothLeService extends Service {
         mBluetoothGatt.readCharacteristic(characteristic);
     }
 
-    public void writeCharacteristic(BluetoothGattCharacteristic characteristic, byte[] data){
-        if (mBluetoothAdapter == null || mBluetoothGatt == null)
-        {
+    public void writeCharacteristic(String value) {
+        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             Log.w(TAG, "BluetoothAdapter not initialized");
             return;
         }
-        if(characteristic == null)
-        {
-            Log.d(TAG," CHARACTERISTIC값이 NULL이야");
+        /*check if the service is available on the device*/
+        BluetoothGattService mCustomService = mBluetoothGatt.getService(UUID.fromString("00001234-0000-1000-8000-00805f9b34fb"));
+        if (mCustomService == null) {
+            Log.w(TAG, "Custom BLE Service not found");
+            return;
         }
-        characteristic.setValue(data);
-        mBluetoothGatt.writeCharacteristic(characteristic);
+        /*get the read characteristic from the service*/
+        BluetoothGattCharacteristic mWriteCharacteristic = mCustomService.getCharacteristic(UUID.fromString("0000ffe1-0000-1000-8000-00805f9b34fb"));
+        mWriteCharacteristic.setValue(value);
+        if (!mBluetoothGatt.writeCharacteristic(mWriteCharacteristic)) {
+            Log.w(TAG, "Failed to write characteristic");
+        }
     }
+//    public void writeCharacteristic(BluetoothGattCharacteristic characteristic) {
+//        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+//            Log.w(TAG, "BluetoothAdapter not initialized");
+//            return;
+//        }
+////        characteristic.setValue(intensity, BluetoothGattCharacteristic.FORMAT_UINT8, 0);
+////        mBluetoothGatt.writeCharacteristic(characteristic);
+//
+//        byte[] value = new byte[1];
+//        value[0] = 0x01;
+//        characteristic.setValue(value);
+//        Log.w(TAG, characteristic.getUuid().toString());
+//        boolean status = mBluetoothGatt.writeCharacteristic(characteristic);
+//        Log.w(TAG, "status"+status);
+//    }
 
     /**
      * Enables or disables notification on a give characteristic.

@@ -44,7 +44,6 @@ import java.util.ArrayList;
  */
 public class DeviceScanActivity extends ListActivity {
     private final static String TAG = DeviceScanActivity.class.getSimpleName();
-
     private LeDeviceListAdapter mLeDeviceListAdapter;
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
