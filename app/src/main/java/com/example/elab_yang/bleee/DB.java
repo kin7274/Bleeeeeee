@@ -45,20 +45,24 @@ public class DB extends AppCompatActivity {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "온리시브");
             String message = intent.getStringExtra("message");
-            // DB에 넣기전에 거르자!
-//            delete();
-            // DB에 셋!
-            setDB(message);
+            Log.d(TAG, "겟 메세지" + message);
+            editText1.setText(message);
+            editText2.setText(" ");
+            Log.d(TAG, "셋텍스트");
+            setDB();
         }
     };
 
-    public void setDB(String str) {
+    public void setDB() {
+        Log.d(TAG, "셋디비 스타트");
         sql = my.getWritableDatabase();
-        sql.execSQL("INSERT INTO member VALUES('" + str + "','" + editText2.getText().toString() + "');"
+        sql.execSQL("INSERT INTO member VALUES('" + editText1.getText().toString() + "','" + editText2.getText().toString() + "');"
         );
         sql.close();
         Toast.makeText(getApplicationContext(), "정보가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "셋디비 탈출");
     }
 
     @Override
@@ -117,7 +121,7 @@ public class DB extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "띠용");
-                mBluetoothLeService.writeCharacteristic("a");
+                mBluetoothLeService.writeCharacteristic("b");
             }
         });
     }
@@ -129,7 +133,7 @@ public class DB extends AppCompatActivity {
     }
 }
 
-    // 설정 후 돌아오면!
+// 설정 후 돌아오면!
 //    @Override
 //    protected void onResume() {
 //        super.onResume();

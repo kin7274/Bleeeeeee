@@ -43,7 +43,6 @@ import java.util.UUID;
 public class BluetoothLeService extends Service {
 
     private final static String TAG = BluetoothLeService.class.getSimpleName();
-    private static byte[] data;
     private BluetoothManager mBluetoothManager = null;
     private static BluetoothAdapter mBluetoothAdapter = null;
     private String mBluetoothDeviceAddress = null;
@@ -103,16 +102,10 @@ public class BluetoothLeService extends Service {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
                 Log.d(TAG, "온캐릭터리스틱 리!드!");
-            }
-        }
 
-
-        @Override
-        public void onCharacteristicWrite(BluetoothGatt gatt,
-                                          BluetoothGattCharacteristic characteristic,
-                                          int status){
-            if(status == BluetoothGatt.GATT_SUCCESS){
-                broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+//                Intent intent = new Intent();
+//                String action1 = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
+//                BluetoothLog.setAbc(action1);
             }
         }
 
@@ -134,6 +127,7 @@ public class BluetoothLeService extends Service {
     private void broadcastUpdate(final String action,
                                  final BluetoothGattCharacteristic characteristic) {
         final Intent intent = new Intent(action);
+
         // This is special handling for the Heart Rate Measurement profile.
         // carried out as per profile specifications:
         // http://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
@@ -161,16 +155,12 @@ public class BluetoothLeService extends Service {
                 Log.d(TAG, "데이터날리는데?");
                 String action1 = intent.getStringExtra(EXTRA_DATA);
                 BluetoothLog.setAbc(action1);
-                sendMessage();
+                Intent intent33 = new Intent("namsik");
+                intent33.putExtra("message", action1);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent33);
             }
         }
         sendBroadcast(intent);
-    }
-
-    private void sendMessage() {
-        Intent intent33 = new Intent("namsik");
-        intent33.putExtra("message", "전달하고자 하는 데이터");
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent33);
     }
 
     public class LocalBinder extends Binder {
@@ -193,7 +183,6 @@ public class BluetoothLeService extends Service {
 //        // invoked when the UI is disconnected from the Service.
 //        close();
 //        Log.d(TAG, "언바인드");
-//
 //        return super.onUnbind(intent);
 //    }
 
@@ -298,6 +287,44 @@ public class BluetoothLeService extends Service {
      *
      * @param characteristic The characteristic to read from.
      */
+
+    public static void writeCharacteristic(BluetoothGattCharacteristic characteristic, byte[] data){
+        if (mBluetoothAdapter == null || mBluetoothGatt == null)
+        {
+            Log.w(TAG, "BluetoothAdapter not initialized");
+            return;
+        }
+        if(characteristic == null)
+        {
+            Log.d(TAG," CHARACTERISTIC값이 NULL이야");
+        }
+        characteristic.setValue(data);
+        mBluetoothGatt.writeCharacteristic(characteristic);
+    }
+
+    /**
+     * Enables or disables notification on a give characteristic.
+     *
+     * @param characteristic Characteristic to act on.
+     * @param enabled        If true, enable notification.  False otherwise.
+     */
+    public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic,
+                                              boolean enabled) {
+        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+            Log.d(TAG, " 블루투스어댑터 낫 이ㅅ니셜라이즈드 //////////////// BluetoothAdapter not initialized");
+            return;
+        }
+        mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
+
+        // This is specific to Heart Rate Measurement.
+        if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
+            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
+                    UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
+            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            mBluetoothGatt.writeDescriptor(descriptor);
+        }
+    }
+
     public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             Log.d(TAG, " 블루투스어댑터 낫 이니셜라이즈드 ///////// BluetoothAdapter not initialized");
@@ -322,44 +349,6 @@ public class BluetoothLeService extends Service {
         mWriteCharacteristic.setValue(value);
         if (!mBluetoothGatt.writeCharacteristic(mWriteCharacteristic)) {
             Log.w(TAG, "Failed to write characteristic");
-        }
-    }
-//    public void writeCharacteristic(BluetoothGattCharacteristic characteristic) {
-//        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-//            Log.w(TAG, "BluetoothAdapter not initialized");
-//            return;
-//        }
-////        characteristic.setValue(intensity, BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-////        mBluetoothGatt.writeCharacteristic(characteristic);
-//
-//        byte[] value = new byte[1];
-//        value[0] = 0x01;
-//        characteristic.setValue(value);
-//        Log.w(TAG, characteristic.getUuid().toString());
-//        boolean status = mBluetoothGatt.writeCharacteristic(characteristic);
-//        Log.w(TAG, "status"+status);
-//    }
-
-    /**
-     * Enables or disables notification on a give characteristic.
-     *
-     * @param characteristic Characteristic to act on.
-     * @param enabled        If true, enable notification.  False otherwise.
-     */
-    public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic,
-                                              boolean enabled) {
-        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log.d(TAG, " 블루투스어댑터 낫 이ㅅ니셜라이즈드 //////////////// BluetoothAdapter not initialized");
-            return;
-        }
-        mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
-
-        // This is specific to Heart Rate Measurement.
-        if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
-            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
-                    UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
-            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            mBluetoothGatt.writeDescriptor(descriptor);
         }
     }
 
