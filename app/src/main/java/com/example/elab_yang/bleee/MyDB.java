@@ -11,7 +11,7 @@ public class MyDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table member (user_name Integer primart key, name cher(10))");
+        db.execSQL("create table member (user_name Integer PRIMARY KEY, name cher(10))");
     }
 
     @Override

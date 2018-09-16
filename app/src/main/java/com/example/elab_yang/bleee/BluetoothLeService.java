@@ -26,18 +26,13 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
-import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
-import android.widget.Toast;
-import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
-
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,12 +41,13 @@ import java.util.UUID;
  * given Bluetooth LE device.
  */
 public class BluetoothLeService extends Service {
-    private final static String TAG = BluetoothLeService.class.getSimpleName();
 
-    private BluetoothManager mBluetoothManager;
-    private BluetoothAdapter mBluetoothAdapter;
-    private String mBluetoothDeviceAddress;
-    private BluetoothGatt mBluetoothGatt;
+    private final static String TAG = BluetoothLeService.class.getSimpleName();
+    private static byte[] data;
+    private BluetoothManager mBluetoothManager = null;
+    private static BluetoothAdapter mBluetoothAdapter = null;
+    private String mBluetoothDeviceAddress = null;
+    private static BluetoothGatt mBluetoothGatt;
     private int mConnectionState = STATE_DISCONNECTED;
 
     private static final int STATE_DISCONNECTED = 0;
@@ -69,8 +65,7 @@ public class BluetoothLeService extends Service {
     public final static String EXTRA_DATA =
             "com.example.bluetooth.le.EXTRA_DATA";
 
-    public final static UUID UUID_HEART_RATE_MEASUREMENT =
-            UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
+    public final static UUID UUID_HEART_RATE_MEASUREMENT = UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
 
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.
@@ -104,9 +99,7 @@ public class BluetoothLeService extends Service {
         }
 
         @Override
-        public void onCharacteristicRead(BluetoothGatt gatt,
-                                         BluetoothGattCharacteristic characteristic,
-                                         int status) {
+        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
                 Log.d(TAG, "온캐릭터리스틱 리!드!");
@@ -114,7 +107,6 @@ public class BluetoothLeService extends Service {
 //                Intent intent = new Intent();
 //                String action1 = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
 //                BluetoothLog.setAbc(action1);
-
             }
         }
 
@@ -169,12 +161,12 @@ public class BluetoothLeService extends Service {
                 Intent intent33 = new Intent("namsik");
                 intent33.putExtra("message", action1);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent33);
-                }
+            }
         }
         sendBroadcast(intent);
     }
 
-    private void sendMessage(){
+    private void sendMessage() {
         Intent intent33 = new Intent("namsik");
         intent33.putExtra("message", "전달하고자 하는 데이터");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent33);
@@ -227,7 +219,6 @@ public class BluetoothLeService extends Service {
             Log.e(TAG, "Unable to obtain a BluetoothAdapter.");
             return false;
         }
-
         return true;
     }
 
@@ -291,13 +282,13 @@ public class BluetoothLeService extends Service {
      * After using a given BLE device, the app must call this method to ensure resources are
      * released properly.
      */
-    public void close() {
-        if (mBluetoothGatt == null) {
-            return;
-        }
-        mBluetoothGatt.close();
-        mBluetoothGatt = null;
-    }
+//    public void close() {
+//        if (mBluetoothGatt == null) {
+//            return;
+//        }
+//        mBluetoothGatt.close();
+//        mBluetoothGatt = null;
+//    }
 
     /**
      * Request a read on a given {@code BluetoothGattCharacteristic}. The read result is reported
@@ -312,6 +303,20 @@ public class BluetoothLeService extends Service {
             return;
         }
         mBluetoothGatt.readCharacteristic(characteristic);
+    }
+
+    public void writeCharacteristic(BluetoothGattCharacteristic characteristic, byte[] data){
+        if (mBluetoothAdapter == null || mBluetoothGatt == null)
+        {
+            Log.w(TAG, "BluetoothAdapter not initialized");
+            return;
+        }
+        if(characteristic == null)
+        {
+            Log.d(TAG," CHARACTERISTIC값이 NULL이야");
+        }
+        characteristic.setValue(data);
+        mBluetoothGatt.writeCharacteristic(characteristic);
     }
 
     /**

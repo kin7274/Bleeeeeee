@@ -39,23 +39,16 @@
         android:id="@+id/btn2"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_above="@+id/btn3"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="183dp"
         android:text="페어링가즈아ㅏ" />
-
-    <TextView
-        android:id="@+id/textview3"
-        android:layout_width="match_parent"
-        android:layout_height="84dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/btn2" />
 
     <Button
         android:id="@+id/btn3"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textview3"
+        android:layout_marginBottom="162dp"
         android:text="디비디비딥" />
 </RelativeLayout>

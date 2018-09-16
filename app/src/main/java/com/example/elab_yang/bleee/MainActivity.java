@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public static Context mContext;
 
     Button btn1, btn2, btn3;
-    TextView textview1, textview2, textview3;
+    TextView textview1, textview2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
         textview1 = (TextView) findViewById(R.id.textview1);
         textview2 = (TextView) findViewById(R.id.textview2);
-        textview3 = (TextView) findViewById(R.id.textview3);
-
         //
     }
 
@@ -82,22 +80,5 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "11111 설정 후 내가 돌아왔어");
         textview1.setText(BluetoothLog.getName());
         textview2.setText(BluetoothLog.getAddress());
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("namsik"));
-    }
-
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String message = intent.getStringExtra("message");
-            //CallYourMethod(message); 실행시킬 메소드를 전달 받은 데이터를 담아 호출하려면 이렇게 한다.
-            textview3.setText(message);
-        }
-    };
-
-    @Override
-    protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-        super.onPause();
     }
 }

@@ -1,17 +1,18 @@
 package com.example.elab_yang.bleee;
 
-import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,8 +21,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static com.example.elab_yang.bleee.BluetoothLeService.*;
+
 public class DB extends AppCompatActivity {
-    private Menu mMenu;
+    private final static String TAG = DB.class.getSimpleName();
 
     MyDB my;
     public EditText editText1, editText2;
@@ -29,31 +32,41 @@ public class DB extends AppCompatActivity {
     public Button button1, button2, button3;
     SQLiteDatabase sql;
 
+
+    private BluetoothLeService mBluetoothLeService;
+    //
+    //
+    //
+
     public ArrayList<String> mUserNameArrayList = new ArrayList<String>();
-    private AlertDialog mUserListDialog;
 
     String user_name2;
     String setting_time2;
-
-
-
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
+//            editText1.setText(message);
+            setDB();
         }
     };
 
-
-
-
+    public void setDB() {
+//        sql = my.getWritableDatabase();
+//        sql.execSQL("INSERT INTO member VALUES('" + editText1.getText().toString()
+//                + "','" + editText2.getText().toString() + "');"
+//        );
+//        sql.close();
+        Toast.makeText(getApplicationContext(), "정보가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_db);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("namsik"));
 
         my = new MyDB(this);
 
@@ -67,15 +80,18 @@ public class DB extends AppCompatActivity {
         user_name = (TextView) findViewById(R.id.textView5);
         setting_time = (TextView) findViewById(R.id.textView6);
 
+        // 초기화
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sql = my.getWritableDatabase();
                 my.onUpgrade(sql, 1, 2);
                 sql.close();
+                Toast.makeText(getApplicationContext(), "초기화했어유", Toast.LENGTH_LONG).show();
             }
         });
 
+        // DB 조회
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 sql = my.getReadableDatabase();
@@ -96,67 +112,32 @@ public class DB extends AppCompatActivity {
             }
         });
 
+        // DB에 저장!!!
+        // 동기화지
+        // 블루투스값을 여기에 저장한다!
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sql = my.getWritableDatabase();
-                sql.execSQL("INSERT INTO member VALUES('" + editText1.getText().toString()
-                        + "','" + editText2.getText().toString() + "');"
-                );
-                sql.close();
-                Toast.makeText(getApplicationContext(), "정보가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "띠용");
+//                Toast.makeText(getApplicationContext(), "띠요요옹", Toast.LENGTH_LONG).show();
+
+                byte[] data = {0x01};
+                BluetoothGattCharacteristic characteristic;
+                mBluetoothLeService.writeCharacteristic(characteristic, data);
             }
         });
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        mMenu = menu;
-        return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.show_dialog) {
-            initUserListDialog();
-            mUserListDialog.show();
-            return true;
-        } else {
-            return true;
-        }
+    protected void onPause() {
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onPause();
     }
-
-    private void initUserListDialog() {
-        mUserNameArrayList.clear();
-
-        sql = my.getReadableDatabase();
-        Cursor cursor;
-        cursor = sql.rawQuery("SELECT * FROM MEMBER;", null);
-
-        while (cursor.moveToNext()) {
-            user_name2 += cursor.getString(0) + "\r\n";
-            setting_time2 += cursor.getString(1) + "\r\n";
-            mUserNameArrayList.add(cursor.getString(0) + "\n" + cursor.getString(1));
-        }
-
-        final String[] items = mUserNameArrayList.toArray(new String[mUserNameArrayList.size()]);
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select User");
-        builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        mUserListDialog = builder.create();
-        mUserListDialog.setCanceledOnTouchOutside(false);
-    }
-
 }
+
+    // 설정 후 돌아오면!
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("namsik"));
+//    }
