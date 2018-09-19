@@ -53,16 +53,13 @@ public class BluetoothLeService extends Service {
     private static final int STATE_CONNECTING = 1;
     private static final int STATE_CONNECTED = 2;
 
-    public final static String ACTION_GATT_CONNECTED =
-            "com.example.bluetooth.le.ACTION_GATT_CONNECTED";
-    public final static String ACTION_GATT_DISCONNECTED =
-            "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED";
-    public final static String ACTION_GATT_SERVICES_DISCOVERED =
-            "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
-    public final static String ACTION_DATA_AVAILABLE =
-            "com.example.bluetooth.le.ACTION_DATA_AVAILABLE";
-    public final static String EXTRA_DATA =
-            "com.example.bluetooth.le.EXTRA_DATA";
+    public final static String ACTION_GATT_CONNECTED = "com.example.bluetooth.le.ACTION_GATT_CONNECTED";
+    public final static String ACTION_GATT_DISCONNECTED = "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED";
+    public final static String ACTION_GATT_SERVICES_DISCOVERED = "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
+    public final static String ACTION_DATA_AVAILABLE = "com.example.bluetooth.le.ACTION_DATA_AVAILABLE";
+    public final static String EXTRA_DATA = "com.example.bluetooth.le.EXTRA_DATA";
+    public final static String ACTION_DATA_AVAILABLE_CHANGE = "com.example.bluetooth.le.ACTION_DATA_AVAILABLE_CHANGE";
+
 
     public final static UUID UUID_HEART_RATE_MEASUREMENT = UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
 
@@ -112,9 +109,11 @@ public class BluetoothLeService extends Service {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt,
                                             BluetoothGattCharacteristic characteristic) {
-            broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+
+            broadcastUpdate(ACTION_DATA_AVAILABLE_CHANGE, characteristic);
             Log.d(TAG, "온캐릭터리스틱 체!인!지!");
-            onCharacteristicRead(gatt, characteristic, BluetoothGatt.GATT_SUCCESS);
+
+//            onCharacteristicRead(gatt, characteristic, BluetoothGatt.GATT_SUCCESS);
         }
     };
 
@@ -149,15 +148,18 @@ public class BluetoothLeService extends Service {
             final byte[] data = characteristic.getValue();
             if (data != null && data.length > 0) {
                 final StringBuilder stringBuilder = new StringBuilder(data.length);
-                for (byte byteChar : data)
+                for (byte byteChar : data) {
                     stringBuilder.append(String.format("%02X ", byteChar));
+                }
+
                 intent.putExtra(EXTRA_DATA, new String(data) + "\n" + stringBuilder.toString());
                 Log.d(TAG, "데이터날리는데?");
-                String action1 = intent.getStringExtra(EXTRA_DATA);
-                BluetoothLog.setAbc(action1);
-                Intent intent33 = new Intent("namsik");
-                intent33.putExtra("message", action1);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(intent33);
+//                String action1 = intent.getStringExtra(EXTRA_DATA);
+//                BluetoothLog.setAbc(action1);
+//                Intent intent33 = new Intent("namsik");
+
+//                intent33.putExtra("message", action1);
+//                LocalBroadcastManager.getInstance(this).sendBroadcast(intent33);
             }
         }
         sendBroadcast(intent);
@@ -288,15 +290,13 @@ public class BluetoothLeService extends Service {
      * @param characteristic The characteristic to read from.
      */
 
-    public static void writeCharacteristic(BluetoothGattCharacteristic characteristic, byte[] data){
-        if (mBluetoothAdapter == null || mBluetoothGatt == null)
-        {
+    public static void writeCharacteristic(BluetoothGattCharacteristic characteristic, byte[] data) {
+        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             Log.w(TAG, "BluetoothAdapter not initialized");
             return;
         }
-        if(characteristic == null)
-        {
-            Log.d(TAG," CHARACTERISTIC값이 NULL이야");
+        if (characteristic == null) {
+            Log.d(TAG, " CHARACTERISTIC값이 NULL이야");
         }
         characteristic.setValue(data);
         mBluetoothGatt.writeCharacteristic(characteristic);
@@ -334,6 +334,7 @@ public class BluetoothLeService extends Service {
     }
 
     public void writeCharacteristic(String value) {
+        Log.e(TAG, "writeCharacteristic: " + "called " );
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             Log.w(TAG, "BluetoothAdapter not initialized");
             return;

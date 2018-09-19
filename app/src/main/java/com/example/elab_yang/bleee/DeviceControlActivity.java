@@ -75,7 +75,6 @@ public class DeviceControlActivity extends Activity {
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
-
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
             mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
@@ -124,6 +123,8 @@ public class DeviceControlActivity extends Activity {
                 Log.d(TAG, "띠용...");
                 displayData(abc);
                 Log.d(TAG, "2페이지 종료");
+
+
                 finish();
             }
         }
@@ -139,29 +140,25 @@ public class DeviceControlActivity extends Activity {
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
                                             int childPosition, long id) {
                     if (mGattCharacteristics != null) {
-                        final BluetoothGattCharacteristic characteristic =
-                                mGattCharacteristics.get(groupPosition).get(childPosition);
+                        final BluetoothGattCharacteristic characteristic = mGattCharacteristics.get(groupPosition).get(childPosition);
                         final int charaProp = characteristic.getProperties();
                         if ((charaProp | BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
                             // If there is an active notification on a characteristic, clear
                             // it first so it doesn't update the data field on the user interface.
                             if (mNotifyCharacteristic != null) {
-                                mBluetoothLeService.setCharacteristicNotification(
-                                        mNotifyCharacteristic, false);
+                                mBluetoothLeService.setCharacteristicNotification(mNotifyCharacteristic, false);
                                 mNotifyCharacteristic = null;
                             }
                             mBluetoothLeService.readCharacteristic(characteristic);
                         }
                         if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
                             mNotifyCharacteristic = characteristic;
-                            mBluetoothLeService.setCharacteristicNotification(
-                                    characteristic, true);
+                            mBluetoothLeService.setCharacteristicNotification(characteristic, true);
                         }
 
                         if ((charaProp | BluetoothGattCharacteristic.PROPERTY_WRITE) == 10) {
                             if (mNotifyCharacteristic != null) {
-                                mBluetoothLeService.setCharacteristicNotification(
-                                        mNotifyCharacteristic, false);
+                                mBluetoothLeService.setCharacteristicNotification(mNotifyCharacteristic, false);
                                 mNotifyCharacteristic = null;
                             }
                             mBluetoothLeService.readCharacteristic(characteristic);
@@ -185,6 +182,7 @@ public class DeviceControlActivity extends Activity {
         mContext = this;
 
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+
         if (mBluetoothLeService != null) {
             final boolean result = mBluetoothLeService.connect(mDeviceAddress);
             Log.d(TAG, "Connect request result=" + result);
@@ -223,14 +221,17 @@ public class DeviceControlActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(mGattUpdateReceiver);
+//        unregisterReceiver(mGattUpdateReceiver);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.e(TAG, "onDestroy: " + "서비스 특성후 엑티비티 파괴" );
+        unregisterReceiver(mGattUpdateReceiver);
         unbindService(mServiceConnection);
         mBluetoothLeService = null;
+
     }
 
     @Override

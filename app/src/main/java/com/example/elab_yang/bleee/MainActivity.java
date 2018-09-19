@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.btn3:
                     Intent intent3 = new Intent(MainActivity.this, AddNeedleActivity.class);
+                    intent3.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, textview1.getText());
+                    intent3.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, textview2.getText());
                     startActivity(intent3);
                     break;
             }
