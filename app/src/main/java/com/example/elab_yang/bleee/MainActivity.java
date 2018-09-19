@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent2);
                     break;
                 case R.id.btn3:
-                    Intent intent3 = new Intent(MainActivity.this, DB.class);
+                    Intent intent3 = new Intent(MainActivity.this, AddNeedleActivity.class);
                     startActivity(intent3);
                     break;
             }
