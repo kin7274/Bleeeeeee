@@ -49,7 +49,7 @@ public class AddNeedleActivity extends AppCompatActivity {
 //            MSG[7] + MSG[8] = 19일
 //            MSG[9] + MSG[10] = 15시
 //            MSG[11] + MSG[12] = 39분
-            
+
 //            Log.d(TAG, "MSG[0] = " + MSG[0]);
 //            Log.d(TAG, "MSG[1] = " + MSG[1]);
 //            Log.d(TAG, "MSG[2] = " + MSG[2]);
@@ -58,7 +58,7 @@ public class AddNeedleActivity extends AppCompatActivity {
 //            Log.d(TAG, "MSG[5] = " + MSG[5]);
 //            Log.d(TAG, "MSG[6] = " + MSG[6]);
 //            Log.d(TAG, "MSG[7] = " + MSG[7]);
-            String REALREALREAL = MSG[1] + MSG[2] + MSG[3] + MSG[4] + "년도 " + MSG[5] + MSG[6] + "월 " + MSG[7] + MSG[8] + "일 " + MSG[9] + MSG[10] + "시 " + MSG[11] + MSG[12] + "분입니다.";
+            String REALREALREAL = MSG[1] + MSG[2] + MSG[3] + MSG[4] + "년 " + MSG[5] + MSG[6] + "월 " + MSG[7] + MSG[8] + "일 " + MSG[9] + MSG[10] + "시 " + MSG[11] + MSG[12] + "분입니다.";
             setDB(REALREALREAL);
         }
     };
@@ -92,6 +92,8 @@ public class AddNeedleActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "초기화", Toast.LENGTH_LONG).show();
                 sql = my.getWritableDatabase();
+                // 화면 clear
+                user_name2 = "";
                 my.onUpgrade(sql, 1, 2);
                 sql.close();
             }
@@ -101,8 +103,10 @@ public class AddNeedleActivity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 sql = my.getReadableDatabase();
+                // 화면 clear
+                user_name2 = "";
                 Cursor cursor;
-                cursor = sql.rawQuery("select*from tb_NEEDLE order by needleTime", null);
+                cursor = sql.rawQuery("select*from tb_NEEDLE", null);
                 while (cursor.moveToNext()) {
                     user_name2 += cursor.getString(0) + " : "
                     + cursor.getString(1) + " / " + "\n";
