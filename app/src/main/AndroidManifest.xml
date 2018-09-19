@@ -22,8 +22,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddNeedleActivity" />
-        <activity android:name=".DBMainActivity" />
-        <activity android:name=".ReadNeedleActivity" />
         <activity
             android:name=".DeviceControlActivity"
             android:theme="@android:style/Theme.Holo.Light" />
