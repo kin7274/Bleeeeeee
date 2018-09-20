@@ -1,4 +1,4 @@
-package com.example.elab_yang.bleee.DBbase_SQLite;
+package com.example.elab_yang.bleee;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -17,16 +17,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.elab_yang.bleee.Bluetooth.BluetoothLeService;
-import com.example.elab_yang.bleee.R;
-import com.example.elab_yang.bleee.myDB;
-
 import java.util.ArrayList;
 
-import static com.example.elab_yang.bleee.Bluetooth.BluetoothLeService.ACTION_DATA_AVAILABLE;
-import static com.example.elab_yang.bleee.Bluetooth.BluetoothLeService.ACTION_DATA_AVAILABLE_CHANGE;
-import static com.example.elab_yang.bleee.Bluetooth.BluetoothLeService.EXTRA_DATA;
-import static com.example.elab_yang.bleee.Bluetooth.DeviceControlActivity.EXTRAS_DEVICE_ADDRESS;
+import static com.example.elab_yang.bleee.BluetoothLeService.ACTION_DATA_AVAILABLE;
+import static com.example.elab_yang.bleee.BluetoothLeService.ACTION_DATA_AVAILABLE_CHANGE;
+import static com.example.elab_yang.bleee.BluetoothLeService.EXTRA_DATA;
+import static com.example.elab_yang.bleee.DeviceControlActivity.EXTRAS_DEVICE_ADDRESS;
 
 public class AddNeedleActivity extends AppCompatActivity {
 

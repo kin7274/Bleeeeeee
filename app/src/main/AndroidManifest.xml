@@ -23,14 +23,14 @@
         </activity>
         <activity android:name=".DBbase_SQLite.AddNeedleActivity" />
         <activity
-            android:name=".Bluetooth.DeviceControlActivity"
+            android:name=".DeviceControlActivity"
             android:theme="@android:style/Theme.Holo.Light" />
         <activity
-            android:name=".Bluetooth.DeviceScanActivity"
+            android:name=".DeviceScanActivity"
             android:theme="@android:style/Theme.Holo.Light" />
 
         <service
-            android:name=".Bluetooth.BluetoothLeService"
+            android:name=".BluetoothLeService"
             android:enabled="true" />
     </application>
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.elab_yang.bleee.Bluetooth;
+package com.example.elab_yang.bleee;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -36,9 +36,6 @@ import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.elab_yang.bleee.R;
-import com.example.elab_yang.bleee.SampleGattAttributes;
 
 import java.util.ArrayList;
 import java.util.HashMap;

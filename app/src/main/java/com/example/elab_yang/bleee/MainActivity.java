@@ -9,9 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.elab_yang.bleee.Bluetooth.BluetoothLog;
-import com.example.elab_yang.bleee.Bluetooth.DeviceControlActivity;
-import com.example.elab_yang.bleee.Bluetooth.DeviceScanActivity;
 import com.example.elab_yang.bleee.DBbase_SQLite.AddNeedleActivity;
 
 public class MainActivity extends AppCompatActivity {

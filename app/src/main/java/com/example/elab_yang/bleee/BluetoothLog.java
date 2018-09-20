@@ -1,4 +1,4 @@
-package com.example.elab_yang.bleee.Bluetooth;
+package com.example.elab_yang.bleee;
 
 public class BluetoothLog {
     private static String name = "";
