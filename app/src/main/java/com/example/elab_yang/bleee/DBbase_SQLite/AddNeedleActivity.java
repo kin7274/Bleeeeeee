@@ -1,4 +1,4 @@
-package com.example.elab_yang.bleee;
+package com.example.elab_yang.bleee.DBbase_SQLite;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -10,21 +10,23 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.elab_yang.bleee.Bluetooth.BluetoothLeService;
+import com.example.elab_yang.bleee.R;
+import com.example.elab_yang.bleee.myDB;
+
 import java.util.ArrayList;
 
-import static com.example.elab_yang.bleee.BluetoothLeService.ACTION_DATA_AVAILABLE;
-import static com.example.elab_yang.bleee.BluetoothLeService.ACTION_DATA_AVAILABLE_CHANGE;
-import static com.example.elab_yang.bleee.BluetoothLeService.EXTRA_DATA;
-import static com.example.elab_yang.bleee.DeviceControlActivity.EXTRAS_DEVICE_ADDRESS;
+import static com.example.elab_yang.bleee.Bluetooth.BluetoothLeService.ACTION_DATA_AVAILABLE;
+import static com.example.elab_yang.bleee.Bluetooth.BluetoothLeService.ACTION_DATA_AVAILABLE_CHANGE;
+import static com.example.elab_yang.bleee.Bluetooth.BluetoothLeService.EXTRA_DATA;
+import static com.example.elab_yang.bleee.Bluetooth.DeviceControlActivity.EXTRAS_DEVICE_ADDRESS;
 
 public class AddNeedleActivity extends AppCompatActivity {
 

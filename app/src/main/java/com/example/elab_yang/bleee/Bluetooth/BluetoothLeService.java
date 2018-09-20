@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.elab_yang.bleee;
+package com.example.elab_yang.bleee.Bluetooth;
 
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -30,8 +30,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+
+import com.example.elab_yang.bleee.SampleGattAttributes;
 
 import java.util.List;
 import java.util.UUID;

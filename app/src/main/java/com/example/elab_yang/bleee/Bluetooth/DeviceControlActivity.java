@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.example.elab_yang.bleee;
+package com.example.elab_yang.bleee.Bluetooth;
 
 import android.app.Activity;
-import android.app.Service;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
@@ -29,7 +28,6 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +36,9 @@ import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.elab_yang.bleee.R;
+import com.example.elab_yang.bleee.SampleGattAttributes;
 
 import java.util.ArrayList;
 import java.util.HashMap;

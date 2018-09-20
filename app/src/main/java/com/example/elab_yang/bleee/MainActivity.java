@@ -1,25 +1,18 @@
 package com.example.elab_yang.bleee;
 
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.Iterator;
+import com.example.elab_yang.bleee.Bluetooth.BluetoothLog;
+import com.example.elab_yang.bleee.Bluetooth.DeviceControlActivity;
+import com.example.elab_yang.bleee.Bluetooth.DeviceScanActivity;
+import com.example.elab_yang.bleee.DBbase_SQLite.AddNeedleActivity;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getSimpleName();
