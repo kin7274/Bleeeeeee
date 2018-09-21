@@ -33,7 +33,7 @@ public class AddNeedleActivity extends AppCompatActivity {
     SQLiteDatabase sql;
 
     public TextView user_name;
-    public Button button1, button2, button3, button4, button5;
+    public Button button1, button2, button3, button4;
 
     BluetoothLeService mBluetoothLeService = new BluetoothLeService();
 
@@ -89,9 +89,8 @@ public class AddNeedleActivity extends AppCompatActivity {
         sql.execSQL("INSERT INTO tb_needle VALUES(null, '" + item + "')");
         Log.d(TAG, "ITEM값은 : " + item);
         sql.close();
-
-
-        Toast.makeText(getApplicationContext(), "저장", Toast.LENGTH_SHORT).show();
+        check();
+//        Toast.makeText(getApplicationContext(), "저장", Toast.LENGTH_SHORT).show();
     }
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -106,7 +105,7 @@ public class AddNeedleActivity extends AppCompatActivity {
             mBluetoothLeService.connect(deviceAddress);
             //
             Log.d(TAG, "서비스가 연결되었습니다!");
-            Toast.makeText(getApplicationContext(), "서비스가 연결되었습니다!", Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(), "서비스가 연결되었습니다!", Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -138,44 +137,25 @@ public class AddNeedleActivity extends AppCompatActivity {
         button2 = (Button) findViewById(R.id.button2);
         button3 = (Button) findViewById(R.id.button3);
         button4 = (Button) findViewById(R.id.button4);
-        button5 = (Button) findViewById(R.id.button5);
 
         user_name = (TextView) findViewById(R.id.textView5);
 
-        // 초기화
+        // 앱 내 화면 초기화
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "초기화", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "앱 내 화면 초기화", Toast.LENGTH_LONG).show();
                 sql = my.getWritableDatabase();
                 // 화면 clear
                 user_name2 = "";
                 my.onUpgrade(sql, 1, 2);
                 sql.close();
-            }
-        });
-
-        // DB 조회
-        button2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                sql = my.getReadableDatabase();
-                // 화면 clear
-                user_name2 = "";
-                Cursor cursor;
-                cursor = sql.rawQuery("select*from tb_NEEDLE", null);
-                while (cursor.moveToNext()) {
-                    user_name2 += cursor.getString(0) + " : "
-                            + cursor.getString(1) + "\n";
-                }
-                user_name.setText(user_name2);
-                cursor.close();
-                sql.close();
-                Toast.makeText(getApplicationContext(), "조회하였습니다.", Toast.LENGTH_SHORT).show();
+                check();
             }
         });
 
         // sd카드의 데이터를 가져온다!
-        button3.setOnClickListener(new View.OnClickListener() {
+        button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // a : sd카드 다 리드
@@ -184,7 +164,7 @@ public class AddNeedleActivity extends AppCompatActivity {
         });
 
         // sd카드의 데이터 삭제
-        button4.setOnClickListener(new View.OnClickListener() {
+        button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // c : text 삭제
@@ -194,7 +174,7 @@ public class AddNeedleActivity extends AppCompatActivity {
         });
 
         // DB 행 갯수 확인
-        button5.setOnClickListener(new View.OnClickListener() {
+        button4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 sql = my.getReadableDatabase();
                 long count = DatabaseUtils.queryNumEntries(sql, "tb_NEEDLE");
@@ -227,5 +207,21 @@ public class AddNeedleActivity extends AppCompatActivity {
         mBluetoothLeService = null;
         unregisterReceiver(mMessageReceiver);
         super.onDestroy();
+    }
+
+    public void check(){
+        sql = my.getReadableDatabase();
+        // 화면 clear
+        user_name2 = "";
+        Cursor cursor;
+        cursor = sql.rawQuery("select*from tb_NEEDLE", null);
+        while (cursor.moveToNext()) {
+            user_name2 += cursor.getString(0) + " : "
+                    + cursor.getString(1) + "\n";
+        }
+        user_name.setText(user_name2);
+        cursor.close();
+        sql.close();
+//        Toast.makeText(getApplicationContext(), "조회하였습니다.", Toast.LENGTH_SHORT).show();
     }
 }
