@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -32,7 +33,7 @@ public class AddNeedleActivity extends AppCompatActivity {
     SQLiteDatabase sql;
 
     public TextView user_name;
-    public Button button1, button2, button3, button4;
+    public Button button1, button2, button3, button4, button5;
 
     BluetoothLeService mBluetoothLeService = new BluetoothLeService();
 
@@ -137,6 +138,7 @@ public class AddNeedleActivity extends AppCompatActivity {
         button2 = (Button) findViewById(R.id.button2);
         button3 = (Button) findViewById(R.id.button3);
         button4 = (Button) findViewById(R.id.button4);
+        button5 = (Button) findViewById(R.id.button5);
 
         user_name = (TextView) findViewById(R.id.textView5);
 
@@ -190,9 +192,19 @@ public class AddNeedleActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "데이터 삭제", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // DB 행 갯수 확인
+        button5.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                sql = my.getReadableDatabase();
+                long count = DatabaseUtils.queryNumEntries(sql, "tb_NEEDLE");
+                long rows_count = (long) count;
+                sql.close();
+                Toast.makeText(getApplicationContext(), "행의 갯수 : " + rows_count, Toast.LENGTH_SHORT).show();
+            }
+        });
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-
     }
 
     @Override
@@ -208,7 +220,6 @@ public class AddNeedleActivity extends AppCompatActivity {
 //        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("namsik"));
 
     }
-
 
     @Override
     protected void onDestroy() {

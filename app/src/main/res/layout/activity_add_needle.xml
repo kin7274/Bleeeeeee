@@ -62,6 +62,13 @@
                 android:layout_weight="1"
                 android:text='저장"c"' />
 
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="rows" />
+
         </LinearLayout>
 
         <LinearLayout
