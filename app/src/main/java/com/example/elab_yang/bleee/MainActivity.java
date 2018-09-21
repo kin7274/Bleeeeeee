@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.elab_yang.bleee.DBbase_SQLite.AddNeedleActivity;
+import com.example.elab_yang.bleee.AddNeedleActivity;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getSimpleName();
