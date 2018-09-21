@@ -40,6 +40,7 @@ public class AddNeedleActivity extends AppCompatActivity {
     public ArrayList<String> mUserNameArrayList = new ArrayList<String>();
     String user_name2;
     //
+    int i = 0;
 
     String deviceAddress;
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -49,18 +50,22 @@ public class AddNeedleActivity extends AppCompatActivity {
             final String action = intent.getAction();
 
             if (BluetoothLeService.ACTION_DATA_AVAILABLE_CHANGE.equals(action)) {
-                Log.d(TAG, "온리시브");
-                final String message = intent.getStringExtra(EXTRA_DATA);
-                Toast.makeText(getApplicationContext(), "" + message, Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "겟 메세지" + message);
-//            String REALREALREAL = message;
-                String[] MSG = message.split("");
-//            MSG[1] + MSG[2] + MSG[3] + MSG[4] = 2018년도
-//            MSG[5] + MSG[6] = 09월
-//            MSG[7] + MSG[8] = 19일
-//            MSG[9] + MSG[10] = 15시
-//            MSG[11] + MSG[12] = 39분
+                // 이게 지금 내 DB의 행의 갯수야
+                long AAAAAAAAAAAAAA = rows_count();
+                // DB의 행의 갯수만큼 데이터를 버리고
+                // for문
 
+                // DB의 행의 갯수 +1 만큼 값을 받아
+                // while문
+                while
+                Log.d(TAG, "온리시브");
+
+//                i++
+                final String message = intent.getStringExtra(EXTRA_DATA);
+//                Toast.makeText(getApplicationContext(), "" + message, Toast.LENGTH_SHORT).sh;ow();
+                Log.d(TAG, "겟 메세지" + message);
+
+                String[] MSG = message.split("");
                 Log.d(TAG, "MSG[1] = " + MSG[1]);
                 Log.d(TAG, "MSG[2] = " + MSG[2]);
                 Log.d(TAG, "MSG[3] = " + MSG[3]);
@@ -73,12 +78,11 @@ public class AddNeedleActivity extends AppCompatActivity {
                 Log.d(TAG, "MSG[10] = " + MSG[10]);
                 Log.d(TAG, "MSG[11] = " + MSG[11]);
                 Log.d(TAG, "MSG[12] = " + MSG[12]);
-
                 String REALREALREAL = MSG[1] + MSG[2] + MSG[3] + MSG[4] + "년 " +  MSG[5] + MSG[6] + "월 " + MSG[7] + MSG[8] + "일 " + MSG[9] + MSG[10] + "시 " + MSG[11] + MSG[12] + "분입니다. ";
                 setDB(REALREALREAL);
                 Log.d(TAG, "리얼리얼리어리리 : " + REALREALREAL);
-            }
-
+                }
+            i++;
         }
     };
 
@@ -159,6 +163,8 @@ public class AddNeedleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // a : sd카드 다 리드
+
+                // "a" 값 전송 / 0x61
                 mBluetoothLeService.writeCharacteristic("a");
             }
         });
@@ -176,11 +182,9 @@ public class AddNeedleActivity extends AppCompatActivity {
         // DB 행 갯수 확인
         button4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                sql = my.getReadableDatabase();
-                long count = DatabaseUtils.queryNumEntries(sql, "tb_NEEDLE");
-                long rows_count = (long) count;
-                sql.close();
-                Toast.makeText(getApplicationContext(), "행의 갯수 : " + rows_count, Toast.LENGTH_SHORT).show();
+                //
+                //
+                //
             }
         });
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
@@ -209,6 +213,7 @@ public class AddNeedleActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    // 조회 메서드
     public void check(){
         sql = my.getReadableDatabase();
         // 화면 clear
@@ -224,4 +229,15 @@ public class AddNeedleActivity extends AppCompatActivity {
         sql.close();
 //        Toast.makeText(getApplicationContext(), "조회하였습니다.", Toast.LENGTH_SHORT).show();
     }
+
+    // 행 갯수 확인 메서드
+    public long rows_count(){
+        sql = my.getReadableDatabase();
+        long count = DatabaseUtils.queryNumEntries(sql, "tb_NEEDLE");
+        long rows_count = (long) count;
+        sql.close();
+        Toast.makeText(getApplicationContext(), "행의 갯수 : " + rows_count, Toast.LENGTH_SHORT).show();
+        return rows_count;
+    }
+
 }
