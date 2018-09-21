@@ -163,7 +163,7 @@ public class AddNeedleActivity extends AppCompatActivity {
                 cursor = sql.rawQuery("select*from tb_NEEDLE", null);
                 while (cursor.moveToNext()) {
                     user_name2 += cursor.getString(0) + " : "
-                            + cursor.getString(1) + " / " + "\n";
+                            + cursor.getString(1) + "\n";
                 }
                 user_name.setText(user_name2);
                 cursor.close();
