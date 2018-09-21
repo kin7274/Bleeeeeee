@@ -32,7 +32,7 @@ public class AddNeedleActivity extends AppCompatActivity {
     SQLiteDatabase sql;
 
     public TextView user_name;
-    public Button button1, button2, button3;
+    public Button button1, button2, button3, button4;
 
     BluetoothLeService mBluetoothLeService = new BluetoothLeService();
 
@@ -60,7 +60,6 @@ public class AddNeedleActivity extends AppCompatActivity {
 //            MSG[9] + MSG[10] = 15시
 //            MSG[11] + MSG[12] = 39분
 
-                Log.d(TAG, "MSG[0] = " + MSG[0]);
                 Log.d(TAG, "MSG[1] = " + MSG[1]);
                 Log.d(TAG, "MSG[2] = " + MSG[2]);
                 Log.d(TAG, "MSG[3] = " + MSG[3]);
@@ -68,7 +67,13 @@ public class AddNeedleActivity extends AppCompatActivity {
                 Log.d(TAG, "MSG[5] = " + MSG[5]);
                 Log.d(TAG, "MSG[6] = " + MSG[6]);
                 Log.d(TAG, "MSG[7] = " + MSG[7]);
-                String REALREALREAL = MSG[1] + MSG[2] + "년 " + MSG[3] + MSG[4] + "월 " + MSG[5] + MSG[6] + "일 " + MSG[7] + MSG[8] + "시 " + MSG[9] + MSG[10] + "분입니다. ";
+                Log.d(TAG, "MSG[8] = " + MSG[8]);
+                Log.d(TAG, "MSG[9] = " + MSG[9]);
+                Log.d(TAG, "MSG[10] = " + MSG[10]);
+                Log.d(TAG, "MSG[11] = " + MSG[11]);
+                Log.d(TAG, "MSG[12] = " + MSG[12]);
+
+                String REALREALREAL = MSG[1] + MSG[2] + MSG[3] + MSG[4] + "년 " +  MSG[5] + MSG[6] + "월 " + MSG[7] + MSG[8] + "일 " + MSG[9] + MSG[10] + "시 " + MSG[11] + MSG[12] + "분입니다. ";
                 setDB(REALREALREAL);
                 Log.d(TAG, "리얼리얼리어리리 : " + REALREALREAL);
             }
@@ -80,7 +85,7 @@ public class AddNeedleActivity extends AppCompatActivity {
     public void setDB(String item) {
         sql = my.getWritableDatabase();
 //        sql.execSQL("INSERT INTO tb_needle VALUES(null, '" + item + "')");
-        sql.execSQL("INSERT OR IGNORE INTO tb_needle VALUES(null, '" + item + "')");
+        sql.execSQL("INSERT INTO tb_needle VALUES(null, '" + item + "')");
         Log.d(TAG, "ITEM값은 : " + item);
         sql.close();
 
@@ -131,6 +136,7 @@ public class AddNeedleActivity extends AppCompatActivity {
         button1 = (Button) findViewById(R.id.button1);
         button2 = (Button) findViewById(R.id.button2);
         button3 = (Button) findViewById(R.id.button3);
+        button4 = (Button) findViewById(R.id.button4);
 
         user_name = (TextView) findViewById(R.id.textView5);
 
@@ -171,12 +177,19 @@ public class AddNeedleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // a : sd카드 다 리드
-                // b : "1" 수신
-                // c : text 삭제
                 mBluetoothLeService.writeCharacteristic("a");
             }
         });
 
+        // sd카드의 데이터 삭제
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // c : text 삭제
+                mBluetoothLeService.writeCharacteristic("c");
+                Toast.makeText(getApplicationContext(), "데이터 삭제", Toast.LENGTH_SHORT).show();
+            }
+        });
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 

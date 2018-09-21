@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DBbase_SQLite.AddNeedleActivity" />
+        <activity android:name=".AddNeedleActivity" />
         <activity
             android:name=".DeviceControlActivity"
             android:theme="@android:style/Theme.Holo.Light" />
