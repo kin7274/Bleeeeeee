@@ -51,14 +51,12 @@ public class AddNeedleActivity extends AppCompatActivity {
 
             if (BluetoothLeService.ACTION_DATA_AVAILABLE_CHANGE.equals(action)) {
                 // 이게 지금 내 DB의 행의 갯수야
-                long AAAAAAAAAAAAAA = rows_count();
+
                 // DB의 행의 갯수만큼 데이터를 버리고
                 // for문
 
                 // DB의 행의 갯수 +1 만큼 값을 받아
                 // while문
-                while
-                Log.d(TAG, "온리시브");
 
 //                i++
                 final String message = intent.getStringExtra(EXTRA_DATA);
@@ -78,11 +76,11 @@ public class AddNeedleActivity extends AppCompatActivity {
                 Log.d(TAG, "MSG[10] = " + MSG[10]);
                 Log.d(TAG, "MSG[11] = " + MSG[11]);
                 Log.d(TAG, "MSG[12] = " + MSG[12]);
-                String REALREALREAL = MSG[1] + MSG[2] + MSG[3] + MSG[4] + "년 " +  MSG[5] + MSG[6] + "월 " + MSG[7] + MSG[8] + "일 " + MSG[9] + MSG[10] + "시 " + MSG[11] + MSG[12] + "분입니다. ";
+                String REALREALREAL = MSG[1] + MSG[2] + MSG[3] + MSG[4] + "년 " + MSG[5] + MSG[6] + "월 " + MSG[7] + MSG[8] + "일 " + MSG[9] + MSG[10] + "시 " + MSG[11] + MSG[12] + "분입니다. ";
                 setDB(REALREALREAL);
                 Log.d(TAG, "리얼리얼리어리리 : " + REALREALREAL);
-                }
-            i++;
+            }
+//            i++;
         }
     };
 
@@ -124,7 +122,7 @@ public class AddNeedleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_needle);
 
         deviceAddress = getIntent().getStringExtra(EXTRAS_DEVICE_ADDRESS);
-        if (deviceAddress != null){
+        if (deviceAddress != null) {
             Log.d(TAG, "onCreate: " + deviceAddress);
         }
 
@@ -214,7 +212,7 @@ public class AddNeedleActivity extends AppCompatActivity {
     }
 
     // 조회 메서드
-    public void check(){
+    public void check() {
         sql = my.getReadableDatabase();
         // 화면 clear
         user_name2 = "";
@@ -231,7 +229,7 @@ public class AddNeedleActivity extends AppCompatActivity {
     }
 
     // 행 갯수 확인 메서드
-    public long rows_count(){
+    public long rows_count() {
         sql = my.getReadableDatabase();
         long count = DatabaseUtils.queryNumEntries(sql, "tb_NEEDLE");
         long rows_count = (long) count;

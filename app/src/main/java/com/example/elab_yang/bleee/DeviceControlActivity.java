@@ -225,7 +225,7 @@ public class DeviceControlActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.e(TAG, "onDestroy: " + "서비스 특성후 엑티비티 파괴" );
+        Log.e(TAG, "onDestroy: " + "서비스 특성후 엑티비티 파괴");
         unregisterReceiver(mGattUpdateReceiver);
         unbindService(mServiceConnection);
         mBluetoothLeService = null;
